@@ -17,18 +17,21 @@ class TestLoadEnvironment < Minitest::Test
         assert_equal "development_user", ENV['USERNAME']
     end
 
+    # .env should take precedence over .env.production
     def test_unset_env
         load_env
-        assert_equal "development_user", ENV['USERNAME']
+        assert_equal "non_environment_specific_user", ENV['USERNAME']
     end
 
+    # .env should take precedence over .env.production
     def test_production
         load_env "production"
-        assert_equal "production_user", ENV['USERNAME']
+        assert_equal "non_environment_specific_user", ENV['USERNAME']
     end
 
+    # .env should take precedence over .env.production
     def test_production_file_precedence
         load_env "production"
-        assert_equal "prod_pword", ENV['PASSWORD']
+        assert_equal "pword", ENV['PASSWORD']
     end
 end

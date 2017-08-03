@@ -1,13 +1,15 @@
 require 'dotenv'
 
-# loads in the correct environments .env file e.g. .env.testing etc.
-# environment defaults to "development"
-# "production" will load .env.production and then .env (the former taking
-# precedence for duplicate key/values in both files)
+# Loads in the correct environments .env file e.g. .env.testing etc.
+# Environment defaults to "production".
+# "production" will load .env and then .env.production (the latter taking
+# precedence for duplicate key/values in both files).
+# This approach conforms to the https://12factor.net princliples if no
+# environment value is provided to load_dot_env(env=nil).
 def load_env(environment=nil)
-    environment ||= "development"
-    load_dot_env ".env.#{environment}"
+    environment ||= "production"
     load_dot_env ".env" if environment == "production"
+    load_dot_env ".env.#{environment}"
 end
 
 def load_dot_env(filename)
